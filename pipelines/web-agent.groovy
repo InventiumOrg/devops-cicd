@@ -1,1 +1,2 @@
-agent any
+agent
+pipeline
