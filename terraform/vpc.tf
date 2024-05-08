@@ -1,9 +1,11 @@
 variable "project_id" {
   description = "project id"
+  default     = "mythic-delight-421309"
 }
 
 variable "region" {
   description = "region"
+  default     = "asia-southeast1"
 }
 
 provider "google" {
