@@ -1,0 +1,3 @@
+---
+- name: Include task from redis_deployed.yaml
+  include_tasks: redis_deployed.yaml

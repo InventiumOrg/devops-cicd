@@ -1,0 +1,43 @@
+---
+- name: Parse file from template
+  ansible.builtin.template:
+    mode: "0644"
+    src: template/calico.values.j2
+    dest: /tmp/calico.values.yaml
+
+- name: Check for calico-kube-controller
+  ansible.builtin.shell:
+    cmd: "kubectl get deploy calico-kube-controllers -n calico-system"
+  register: calico_kube_controllers
+  ignore_errors: true
+
+- name: Set fact for calico-kube-controllers
+  set_fact:
+    _calico_kube_controller_not_exist: "{{ calico_kube_controllers.stdout == 0 }}"
+
+- name: Check for calico-typha
+  ansible.builtin.shell:
+    cmd: "kubectl get deploy calico-typha-n calico-system"
+  register: calico_typha
+  ignore_errors: true
+
+- name: Set fact for calico-kube-controllers
+  set_fact:
+    _calico_kube_controllers_not_exist: "{{ calico_kube_controllers.stdout == 0 }}"
+
+- name: Set fact for calico-kube-controller
+  set_fact:
+    _calico_typha_not_exist: "{{ calico_typha.stdout == 0 }}"
+
+- name: Install calico
+  when: _calico_kube_controllers_not_exist and _calico_typha_not_exist
+  ansible.builtin.shell:
+    cmd: "kubectl create -f /tmp/calico.values.yaml"
+  
+- name: Wait for calico-kube-controllers to be ready
+  ansible.builtin.shell:
+    cmd: "kubectl wait --for=condition=available --timeout=600s deployment/calico-kube-controllers -n calico-system"
+
+- name: Wait for calico-typha to be ready
+  ansible.builtin.shell:
+    cmd: "kubectl wait --for=condition=available --timeout=600s deployment/calico-typha -n calico-system"

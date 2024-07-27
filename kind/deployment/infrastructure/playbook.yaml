@@ -1,0 +1,11 @@
+---
+- name: Deploy local kind cluster
+  hosts: inventium
+  gather_facts: false
+  connection: local
+  vars_files: group_vars/main.yaml
+  roles:
+  - name: cluster
+    tags: [idempotent, cluster]
+  - name: calico
+    tags: [idempotent, calico]

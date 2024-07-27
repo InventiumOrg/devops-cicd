@@ -1,0 +1,10 @@
+---
+- name: Parse file from template
+  ansible.builtin.template:
+    mode: "0644"
+    src: template/kind.values.j2
+    dest: /tmp/kind.values.yaml
+
+- name: Deploy kind cluster
+  ansible.builtin.shell:
+    cmd: "kind create cluster --config /tmp/kind.values.yaml"

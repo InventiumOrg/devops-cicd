@@ -1,0 +1,6 @@
+---
+- name: Include task from tigera_operator_deployed.yaml
+  include_tasks: tigera_operator_deployed.yaml
+  
+- name: Include task from calico_deployed.yaml
+  include_tasks: calico_deployed.yaml

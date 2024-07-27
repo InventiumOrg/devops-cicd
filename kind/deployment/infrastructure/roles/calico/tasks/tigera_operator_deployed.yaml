@@ -1,0 +1,16 @@
+---
+- name: Check for calico operator
+  ansible.builtin.shell:
+    cmd: "kubectl get deploy {{ calico__tigera_operator_name }} -n {{ calico__tigera_operator_ns }}"
+  register: tigera_operator
+  ignore_errors: true
+
+- name : Set fact for calico operator
+  set_fact:
+    _calico_operator_not_exist: "{{ tigera_operator.stdout == 0 }}"
+
+- name: Install calico operator
+  when: _calico_operator_not_exist 
+  ansible.builtin.shell:
+    cmd: "kubectl create -f {{ calico__operator_manifests }}"
+  register: calico_operator

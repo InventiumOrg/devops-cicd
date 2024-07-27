@@ -1,0 +1,13 @@
+---
+- name: Deploy {{ app_name }} application
+  hosts: inventium
+  gather_facts: false
+  vars_files: group_vars/main.yaml
+  roles: 
+    - name: mongodb
+      tags: [idempotent, mongodb]
+    - name: redis
+      tags: [idempotent, redis]
+
+ 
+         

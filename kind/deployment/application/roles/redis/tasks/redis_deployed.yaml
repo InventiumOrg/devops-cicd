@@ -1,0 +1,11 @@
+---
+- name: Check Redis deployment if exist
+  ansible.builtin.shell:
+    cmd: "kubectl get deployment {{ app_name }}-redis -n {{ redis_namespace }}"
+  register: redis_deployed
+  until: redis_deployed.rc == 0
+
+- name: Deploy Redis
+  when: redis_deployed.rc != 0
+  ansible.builtin.shell:
+    cmd: "kubectl apply -f {{ redis_deployment_file }} -n {{ redis_namespace }}"

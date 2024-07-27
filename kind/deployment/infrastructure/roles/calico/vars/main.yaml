@@ -1,0 +1,4 @@
+calico__operator_manifests: https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/tigera-operator.yaml
+calico__manifests: https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/custom-resources.yaml
+calico__tigera_operator_ns: tigera-operator
+calico__tigera_operator_name: tigera-operator
